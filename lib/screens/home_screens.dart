@@ -67,18 +67,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _downloadSong(Song song) async {
     try {
-      await _downloadService.downloadSong(
-        song,
-        (progress) {
-          setState(() {
-            song.downloadProgress = progress;
-          });
-        },
-      );
+      await _downloadService.downloadSong(song, (progress) {
+        setState(() {
+          song.downloadProgress = progress;
+        });
+      });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al descargar: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error al descargar: $e')));
     }
   }
 
@@ -92,13 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     if (_isLoading) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     if (_error != null) {
@@ -180,7 +173,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       IconButton(
                         icon: Icon(
-                          _audioService.isPlaying ? Icons.pause_circle : Icons.play_circle,
+                          _audioService.isPlaying
+                              ? Icons.pause_circle
+                              : Icons.play_circle,
                           size: 48,
                           color: theme.colorScheme.primary,
                         ),
@@ -217,7 +212,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   margin: const EdgeInsets.symmetric(vertical: 4),
                   child: ListTile(
                     leading: CircleAvatar(
-                      backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                      backgroundColor: theme.colorScheme.primary.withOpacity(
+                        0.1,
+                      ),
                       child: Icon(
                         song.isDownloaded ? Icons.music_note : Icons.download,
                         color: theme.colorScheme.primary,
@@ -225,27 +222,30 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     title: Text(song.title),
                     subtitle: Text('${song.author} • ${song.duration}'),
-                    trailing: song.isDownloading
-                        ? SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: CircularProgressIndicator(
-                              value: song.downloadProgress,
+                    trailing:
+                        song.isDownloading
+                            ? SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                value: song.downloadProgress,
+                              ),
+                            )
+                            : IconButton(
+                              icon: Icon(
+                                song.isDownloaded
+                                    ? Icons.play_arrow
+                                    : Icons.download,
+                                color: theme.colorScheme.primary,
+                              ),
+                              onPressed: () {
+                                if (song.isDownloaded) {
+                                  _audioService.play(song);
+                                } else {
+                                  _downloadSong(song);
+                                }
+                              },
                             ),
-                          )
-                        : IconButton(
-                            icon: Icon(
-                              song.isDownloaded ? Icons.play_arrow : Icons.download,
-                              color: theme.colorScheme.primary,
-                            ),
-                            onPressed: () {
-                              if (song.isDownloaded) {
-                                _audioService.play(song);
-                              } else {
-                                _downloadSong(song);
-                              }
-                            },
-                          ),
                   ),
                 );
               },
@@ -263,15 +263,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            child: Center(
-              child: Text(
-                'Diseñado por AC y WR',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
           ),
         ],
       ),
@@ -283,4 +274,4 @@ class _HomeScreenState extends State<HomeScreen> {
     _audioService.dispose();
     super.dispose();
   }
-} 
+}
