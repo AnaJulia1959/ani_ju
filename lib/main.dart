@@ -1,8 +1,8 @@
+import 'package:ani_ju/screens/home_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'services/audio_service.dart';
 import 'services/download_service.dart';
-import 'screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -74,5 +74,5 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-} 
+}   
 
