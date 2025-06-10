@@ -27,9 +27,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.light(
-            primary: const Color.fromARGB(255, 116, 30, 229), // Azul principal
+            primary: const Color.fromARGB(255, 116, 30, 229), 
             onPrimary: const Color.fromARGB(255, 255, 196, 196),
-            secondary: const Color.fromARGB(255, 93, 18, 231), // Azul secundario
+            secondary: const Color.fromARGB(255, 93, 18, 231), 
             onSecondary: const Color.fromARGB(255, 250, 191, 191),
             surface: const Color.fromARGB(255, 253, 200, 200),
             background: const Color.fromARGB(255, 252, 199, 199),
